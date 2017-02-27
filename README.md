@@ -16,7 +16,7 @@ Developed for the [CSSBristol](cssbristol.co.uk) Boeing Hackathon.
 
 - Clone repo `git clone https://github.com/harrymt/boeing-hackathon.git`
 - Navigate to the directory `cd boeing-hackathon`
-- Run `pip install -r .\requirements.txt` to install all Python dependancies
+- Run `pip install -r requirements.txt` to install all Python dependancies
 - Run the web server locally by running `python application.py`
 
 ### API Credentials
