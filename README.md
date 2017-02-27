@@ -1,6 +1,6 @@
 # Rate My Plate
 
-Identify theenvironmental impact of food. Tweet an image of food to our account, and we tweet back an environmental report.
+Identify the environmental impact of food. 
 
 Developed for the CSSBristol Boeing Hackathon.
 
@@ -27,7 +27,9 @@ Developed for the CSSBristol Boeing Hackathon.
 
 ## Overview
 
-## Tasks
+Tweet an <strike>image</strike> recipe of food to our account, and we tweet back an environmental report.
+
+### Tasks
 
 - Image Recognition using Google API (Lukasz)
 - Create Python Server (Harry)
