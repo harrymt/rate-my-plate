@@ -12,9 +12,10 @@ class FoodLocationFinder:
         self._df = pd.DataFrame(l)
 
     def get_code(self, food):
-        result = self._df[self._df['text'].str.contains(food, case=False)]
+        regex = ' {} '.format(food)
+        result = self._df[self._df['text'].str.contains(regex, case=False)]
         try:
-            return result.iloc[0]['id']
+            return list(result['id'])
         except IndexError:
             print("This product doesn't exist.")
             raise
@@ -22,19 +23,26 @@ class FoodLocationFinder:
     
     def get_biggest_producer(self, food, region):
         try:
-            code = self.get_code(food)
+            codes = self.get_code(food)
         except IndexError:
             return "Unknown"
-        df = self._comtrade.get_data(commodity = code, region = region)
-        
-        df = df[['TradeValue', 'ptTitle']]
-        df = df.ix[df['ptTitle'] != 'World']
-        
-        result = df.loc[df['TradeValue'].idxmax()]
-        return result['ptTitle']
+
+        for c in codes:
+            df = self._comtrade.get_data(commodity = c, region = region)
+
+            if not df.empty:
+                #We've found some data to work with
+                df = df[['TradeValue', 'ptTitle', 'ptCode']]
+                df = df.ix[df['ptTitle'] != 'World']
+                
+                result = df.loc[df['TradeValue'].idxmax()]
+                return (result['ptCode'], result['ptTitle'])
+
+        #If we get here then none of the codes worked
+        return "Unknown"
 
 
 if __name__ == "__main__":
     finder = FoodLocationFinder('ingredientsHS.json')
 
-    print(finder.get_biggest_producer('Plaiceadsfasd', 826))
+    print(finder.get_biggest_producer('apple', 826))
