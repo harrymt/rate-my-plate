@@ -21,6 +21,14 @@ Developed for the CSSBristol Boeing Hackathon.
 ## API Credentials
 - Create your own file 'credentials.py' with a consumer_key, consumer_secret, access_token, and access_token_secret, which you can generate via the Twitter Application Management (https://apps.twitter.com)
 
+```python
+#credentials.py
+consumer_key = ''
+consumer_secret = ''
+access_token = ''
+access_token_secret = ''
+```
+
 ### Technologies used
 
 - [Python](https://www.python.org/)
