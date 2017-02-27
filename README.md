@@ -18,4 +18,4 @@
 - Making Twitter bot (Ellie)
 - Find out environmental impact of food (Matt)
 - Taking meal and turning them into ingredients (Gavin)
-- Front End? (Even Needed?)
+- Front End to show off the product (Harry)
