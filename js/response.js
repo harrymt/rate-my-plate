@@ -36,14 +36,35 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 getLocation();
 
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    console.log(xmlHttp.status)
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+        return 1; //image icon found
+    } else {
+        return 0; //image icon not found
+    }
+}
+
 function getFoodIcon(foodName) {
 
-    url = 'icons/' + foodName + '.png';
-
-    var icon = L.icon({
-        iconUrl: '../icons/' + foodName + '.png',
-        iconSize: [32, 32]
-    });
+    url = '../icons/' + foodName + '.png';
+    if (httpGet(url)==1) {
+        var icon = L.icon({
+            iconUrl: 'icons/' + foodName + '.png',
+            iconSize: [32, 32]
+        });
+        
+    }
+    else {
+        var icon = L.icon({
+            iconUrl: 'icons/groceries.png',
+            iconSize: [32, 32]
+        });
+    }
 
     return icon;
 }
@@ -75,13 +96,7 @@ function showFoodSources(userPosition){
         var line = [userPosition, loc];
         var icon = getFoodIcon(ingredient.name)
         L.polyline(line, {color: 'red'}).addTo(map);
-        try {
-            L.marker(loc, {icon: icon}).addTo(map);
-        } catch {
-            var icon = getFoodIcon("groceries");
-            L.marker(loc, {icon: icon}).addTo(map);
-        }
-
+        L.marker(loc, {icon: icon}).addTo(map)
         .bindPopup(ingredient.name)
         .openPopup();
         var dist =  distance(userPosition, loc);
