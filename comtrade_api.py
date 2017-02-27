@@ -1,13 +1,4 @@
-"""
-Comtrade API Extract
-Nathan Goldschlag
-December 17, 2014
-Version 1.0
-Written in Python 2.7
 
-This python program extracts trade data from the Comtrade API. 
-
-"""
 ## IMPORT LIBRARIES
 import pickle
 import requests
@@ -26,7 +17,7 @@ class ComtradeAPI:
     
     _init = False
     
-    def get_data(self, commodity = 'AG2', region = '826'):
+    def get_data(self, commodity = 'AG2', region = '826'): #UK by default
         
         if self._first_call is None:
             self._first_call = datetime.datetime.now()
@@ -35,7 +26,7 @@ class ComtradeAPI:
         s += 'type=C&'
         s += 'freq=A&'
         s += 'px=HS&'
-        s += 'ps=2015,2014&'
+        s += 'ps=2015&'
         s += 'r={}&'.format(region)
         s += 'p=all&'
         s += 'rg=1&'
@@ -61,61 +52,8 @@ class ComtradeAPI:
                 df = pd.DataFrame(data)
                 return df
         
-        
-        
 
 if __name__ == '__main__':
     com = ComtradeAPI()
-    com.getBiggestProducer(commodity='0101')
+    print(com.get_data(commodity='0403'))
 
-'''
-# read in JSON file of country codes as a list
-cids = pd.read_csv('UN Comtrade Country List.csv', keep_default_na=False, encoding="ISO-8859-1")
-#print(cids['ctyCode'])
-#f = open('reporterAreas.json','r')
-#areas = json.load(f)
-countryIDs = []
-for i in cids['ctyCode']:
-    countryIDs.append(str(i))
-countryIDs.remove('0')
-print(countryIDs)
-
-# define the rg parameter, trade flow (default = all): The most common area 1 (imports) and 2 (exports)
-#time.sleep(3600)
-# track the number of calls made
-t0 = time.time()
-callsThisHour = 1
-
-baseurl = 'http://comtrade.un.org/api/get?max=50000&type=C&freq=A&px=HS&ps=2015,2014&r={0}&p=all&rg=1&cc=AG2&fmt=csv'
-for c in countryIDs:
-    print('country:', c, '\n', 'time this hour:', time.time()-t0, '\n','calls this hour:',callsThisHour)
-    # create the URL and submit url
-    url= baseurl.format(c)
-    apiResponse = requests.get(url)
-    # parse return output
-    csv = apiResponse.content.decode('utf-8')
-    print(csv)
-
-    # store output
-    lines = csv.split('\r\n')
-    f = open('comtrade_'+c+'.csv','w')
-    for line in lines:
-        f.write(line+'\n')
-    f.close()
-
-    # track the number of calls this hour
-    callsThisHour+=1
-    time.sleep(3)
-    timePassed = time.time() - t0
-    
-    # if hour limit reached, sleep for the remainer of the hour
-    if timePassed<3600 and callsThisHour>98:
-        print('sleeping...')
-        time.sleep(3700-timePassed)
-        print('awake')
-        # reset hour and number of calls
-        t0=time.time()
-        callsThisHour=0
-
-
-'''
