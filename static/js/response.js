@@ -51,22 +51,8 @@ function httpGet(theUrl)
 
 function getFoodIcon(foodName) {
 
-    url = '../icons/' + foodName + '.png';
-    if (httpGet(url)==1) {
-        var icon = L.icon({
-            iconUrl: 'icons/' + foodName + '.png',
-            iconSize: [32, 32]
-        });
-        
-    }
-    else {
-        var icon = L.icon({
-            iconUrl: 'icons/groceries.png',
-            iconSize: [32, 32]
-        });
-    }
-
-    return icon;
+    return 'localhost/icons/' + foodName + '.png';
+   
 }
 
 function getLocation() {

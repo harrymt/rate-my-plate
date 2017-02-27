@@ -8,8 +8,10 @@ def preProcessData(file_name):
     recipes = recipes.dropna()
     return recipes
 
+recipes = preProcessData('recipes.csv')
 
-def findIngredients(recipe, recipes, similar=False):
+
+def findIngredients(recipe, similar=False):
     try:
         recipe = difflib.get_close_matches(recipe, recipes['title'], cutoff=0.5)[0]
     except:
@@ -41,13 +43,12 @@ def findSimilarIngredients(recipe_id, recipes, columns=["calories", "protein", "
     #print(scores)
 
 
-def main():
-    recipes = preProcessData('recipes.csv')
+#def main():
 
-    match_recipe = findIngredients('beef burger', recipes, True)  # test
-    print(match_recipe)
-    findSimilarIngredients(match_recipe.index, recipes)
+    #match_recipe = findIngredients('beef burger', True)  # test
+    #print(match_recipe)
+    #findSimilarIngredients(match_recipe.index, recipes)
 
 
-if __name__ == "__main__":
-    main()
+
+
