@@ -1,13 +1,19 @@
 import pandas as pd
+import math
 recipes = pd.read_csv('recipes.csv')
 def findIngredients(recipe):
     matches = recipes[recipes['title'].str.contains(recipe)]
-    for values in matches.iloc[0]:
-        
+    ingredients = []
+    matches.fillna(True)
+    for i, value in enumerate(matches.iloc[0]):
+        if(value == 1.0 and i > 13):
+            ingredients.append(recipes.columns[i])
+
+    return ingredients
 
 def main():
     recipes.fillna(True)
-    findIngredients('Tomato-Onion Topping')
+    ingredients = findIngredients('Tomato-Onion Topping')
 
 
 
