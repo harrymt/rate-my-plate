@@ -6,7 +6,7 @@ fruit = ["berry", "fruit"]
 other = ["grain", "nut", "wheat", "bakery"]
 vegetable = ["bean", "vegetable"]
 categories = dairy + meat + fruit + other + vegetable
-searches = ["pineapple", "chicken", "Gouda", "hazelnut", "strawberry", "Salmon", "cod", "Ham"]
+searches = ["pineapple", "chicken", "Gouda", "hazelnut", "strawberry", "Salmon", "cod", "Ham", "mozzarella"]
 synset_categories = []
 
 for search in searches:

@@ -30,23 +30,23 @@ def normalizeData(data, columns_to_normalize):
         data[col] = data[col].apply(lambda x: x/data[col].median())
 
 
-def findSimilarIngredients(recipe_id, recipes, columns=["calories", "protein", "fat", "sodium"], critical=[], n=1):
+def findSimilar(recipe_id, recipes, columns=["calories", "protein", "fat", "sodium"], critical=[], n=10):
     relevant_dataset = recipes.copy()[columns]
     normalizeData(relevant_dataset, columns)
     relevant_recipe = relevant_dataset.loc[recipe_id].copy()
-    relevant_dataset["means"] = relevant_dataset.mean(axis=1)
-    print(relevant_recipe)
-    print(relevant_dataset)
-    scores = relevant_dataset.mean(axis=1) - relevant_recipe.mean(axis=1)
-    #print(scores)
+
+    recipes["means"] = relevant_dataset.mean(axis=1)
+    recipes["scores"] = recipes["means"] - float(relevant_recipe.mean(axis=1))
+    recipes["scores"] = recipes["scores"].apply(lambda x: abs(x))
+    return recipes.sort(["scores"])[1:(1+n)]
 
 
-def main():
+def main(search="beef burger"):
     recipes = preProcessData('recipes.csv')
 
-    match_recipe = findIngredients('beef burger', recipes, True)  # test
-    print(match_recipe)
-    findSimilarIngredients(match_recipe.index, recipes)
+    match_recipe = findIngredients(search, recipes, True)
+
+    print(findSimilar(match_recipe.index, recipes))
 
 
 if __name__ == "__main__":
