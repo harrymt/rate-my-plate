@@ -10,6 +10,7 @@ Developed for the [CSSBristol](cssbristol.co.uk) Boeing Hackathon.
 ### Dependancies
 
 - Install [Python](https://www.python.org/)
+- Install [Pip](https://pypi.python.org/pypi/pip)
 
 ### Setup
 
