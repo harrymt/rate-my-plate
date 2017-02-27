@@ -1,21 +1,28 @@
 import pandas as pd
-import math
-recipes = pd.read_csv('recipes.csv')
-def findIngredients(recipe):
-    matches = recipes[recipes['title'].str.contains(recipe)]
-    ingredients = []
-    matches.fillna(True)
-    for i, value in enumerate(matches.iloc[0]):
-        if(value == 1.0 and i > 13):
-            ingredients.append(recipes.columns[i])
+import difflib
 
-    return ingredients
+
+recipes = pd.read_csv('recipes.csv')
+
+
+def findIngredients(recipe, similar=False):
+    try:
+        recipe = difflib.get_close_matches(recipe, recipes['title'], cutoff=0.5)[0]
+    except:
+        return False
+
+    if similar:
+        matches = recipes[recipes['title'].str.contains(recipe)]
+    else:
+        matches = recipes[recipes['title'] == recipe]
+
+    print(matches)
+    return matches
+
 
 def main():
-    recipes.fillna(True)
-    ingredients = findIngredients('Tomato-Onion Topping')
-
-
+    recipes.replace('nan', 0)
+    findIngredients('Fried Chicken', True)  # test
 
 
 if __name__ == "__main__":
