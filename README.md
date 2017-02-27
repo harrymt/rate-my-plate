@@ -1,8 +1,8 @@
 # Rate My Plate
 
-Identify the environmental impact of food. 
+Identify the environmental impact of food.
 
-Developed for the CSSBristol Boeing Hackathon.
+Developed for the [CSSBristol](cssbristol.co.uk) Boeing Hackathon.
 
 
 ## Development Setup
