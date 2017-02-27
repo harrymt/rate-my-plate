@@ -64,5 +64,5 @@ Tweet an <strike>image</strike> recipe of food to our account, and we tweet back
 - Making Twitter bot (Ellie)
 - Find out environmental impact of food (Matt)
 - Taking meal and turning them into ingredients (Gavin)
-- Front End to show off the product (Harry)
+- Front End to show off the product (Gavin)
 
