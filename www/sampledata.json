@@ -1,0 +1,18 @@
+{
+    "user_location" : "Bristol",
+    "meal" : "lasagne",
+    "ingredients" : [
+    {
+        "name" : "onion",
+        "origin" : "United Kingdom"},
+    {"name" : "beef",
+     "origin" : "United Kingdom"},
+    {"name" : "prosciutto",
+     "origin" : "Italy"},
+    {"name" : "tomato",
+      "origin" : "spain"},
+    {"name" : "pasta",
+        "origin" : "Italy"},
+    {"name" : "mozzarella",
+    "origin" : "Italy"}]
+}
