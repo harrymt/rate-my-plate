@@ -36,28 +36,14 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 getLocation();
 
-function httpGet(theUrl)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.status;
-}
-
 function getFoodIcon(foodName) {
 
     url = 'icons/' + foodName + '.png';
-    if (httpGet(url)==0) {
-        var icon = L.icon({
-            iconUrl: 'icons/groceries.png',
-            iconSize: [32, 32]
-        });
-    } else {
-        var icon = L.icon({
-            iconUrl: 'icons/' + foodName + '.png',
-            iconSize: [32, 32]
-        });
-    }
+
+    var icon = L.icon({
+        iconUrl: '../icons/' + foodName + '.png',
+        iconSize: [32, 32]
+    });
 
     return icon;
 }
@@ -89,9 +75,15 @@ function showFoodSources(userPosition){
         var line = [userPosition, loc];
         var icon = getFoodIcon(ingredient.name)
         L.polyline(line, {color: 'red'}).addTo(map);
-        L.marker(loc, {icon: icon}).addTo(map);
-        //.bindPopup(ingredient.name)
-        //.openPopup();
+        try {
+            L.marker(loc, {icon: icon}).addTo(map);
+        } catch {
+            var icon = getFoodIcon("groceries");
+            L.marker(loc, {icon: icon}).addTo(map);
+        }
+
+        .bindPopup(ingredient.name)
+        .openPopup();
         var dist =  distance(userPosition, loc);
         total_distance += dist;
         total_carbon += carbonUsed(dist);
@@ -118,13 +110,13 @@ function showFoodSources(userPosition){
 function distance(locA, locB) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(locB[0]-locA[0]);  // deg2rad below
-  var dLon = deg2rad(locB[1]-locA[1]); 
-  var a = 
+  var dLon = deg2rad(locB[1]-locA[1]);
+  var a =
     Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(deg2rad(locA[0])) * Math.cos(deg2rad(locB[0])) * 
+    Math.cos(deg2rad(locA[0])) * Math.cos(deg2rad(locB[0])) *
     Math.sin(dLon/2) * Math.sin(dLon/2)
-    ; 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    ;
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   var d = R * c; // Distance in km
   return d;
 }
