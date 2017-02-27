@@ -1,43 +1,72 @@
-# boeing-hackathon
+# Rate My Plate
+
+Identify the environmental impact of food.
+
+Developed for the [CSSBristol](cssbristol.co.uk) Boeing Hackathon.
 
 
-# Dependancies
+## Development Setup
+
+### Dependancies
 
 - Install [Python](https://www.python.org/)
+- Install [Pip](https://pypi.python.org/pypi/pip)
 
-
-# Local Setup
+### Setup
 
 - Clone repo `git clone https://github.com/harrymt/boeing-hackathon.git`
 - Navigate to the directory `cd boeing-hackathon`
-- Run `pip install -r .\requirements.txt` to install all Python dependancies
+- Run `pip install -r requirements.txt` to install all Python dependancies
 - Run the web server locally by running `python application.py`
 
+### API Credentials
+- Create your own file 'credentials.py' with a consumer_key, consumer_secret, access_token, and access_token_secret, which you can generate via the Twitter Application Management (https://apps.twitter.com)
 
-## Name Ideas
+```python
+# credentials.py
 
-- Rate my Plate
-- ...
+consumer_key = ''
+consumer_secret = ''
+access_token = ''
+access_token_secret = ''
+```
 
-## Idea
+### Server Side Extra Setup
 
-- Identify environmental impact of food
-  - Tweet an image of food to our account, and we tweet back an environmental report.
+*Clone the Repo*
+
+- `git clone https://github.com/harrymt/boeing-hackathon.git`
+- Then `git pull` whenever there are changes
+
+*Setup a Cron Job*
+
+- `crontab -e` to show the list of cron jobs.
+- Then add `* * * * * python twitterbot.py` to the cronfile.
+- Then add `crontab -l` to check and see if it worked
+
+*Setup a GitHook*
+
+- Create a `pull.php` file with 1 line, `<?php exec('cd boeing-hackathon && git pull'); ?>`
 
 
-## Tasks
+### Technologies used
 
-- Image Recognition using Google API (Lukasz)
+- [Python](https://www.python.org/)
+- [Flask](flask.pocoo.org)
+- [Tweepy](https://github.com/tweepy/tweepy)
+- Hosted on [AWS](https://aws.amazon.com/)
+
+
+## Overview
+
+Tweet an <strike>image</strike> recipe of food to our account, and we tweet back an environmental report.
+
+### Tasks
+
+- <strike>Image Recognition using Google API (Lukasz)</strike>
 - Create Python Server (Harry)
 - Making Twitter bot (Ellie)
 - Find out environmental impact of food (Matt)
 - Taking meal and turning them into ingredients (Gavin)
-- Front End to show off the product (Harry)
+- Front End to show off the product (Gavin)
 
-
-
-# Technologies used
-
-- [Python](https://www.python.org/)
-- [Flask](flask.pocoo.org)
-- Hosted on AWS
