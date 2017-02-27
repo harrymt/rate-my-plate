@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 
 # print a nice greeting.
 def say_hello(username = "World"):
@@ -26,6 +26,9 @@ application.add_url_rule('/', 'index', (lambda: header_text +
 application.add_url_rule('/<username>', 'hello', (lambda username:
     header_text + say_hello(username) + home_link + footer_text))
 
+@application.route('/icons/<path:path>')
+def send_icon(path):
+    return send_from_directory('icons', path)
 # run the app.
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
