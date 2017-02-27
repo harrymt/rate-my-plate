@@ -13,7 +13,7 @@ var mealData = {
      "origin" : [41.87194,12.56738]},
     {"name" : "tomato",
       "origin" : [40.463667,-3.74922]},
-    {"name" : "pasta",
+    {"name" : "apple",
         "origin" : [41.87194,12.56738]},
     {"name" : "mozzarella",
     "origin" : [41.87194,12.56738]}]
@@ -35,6 +35,32 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 getLocation();
+
+function httpGet(theUrl)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.status;
+}
+
+function getFoodIcon(foodName) {
+
+    url = 'icons/' + foodName + '.png';
+    if (httpGet(url)==0) {
+        var icon = L.icon({
+            iconUrl: 'icons/groceries.png',
+            iconSize: [32, 32]
+        });
+    } else {
+        var icon = L.icon({
+            iconUrl: 'icons/' + foodName + '.png',
+            iconSize: [32, 32]
+        });
+    }
+
+    return icon;
+}
 
 function getLocation() {
     if (navigator.geolocation) {
@@ -61,10 +87,11 @@ function showFoodSources(userPosition){
         var ingredient = mealData.ingredients[i];
         var loc = ingredient.origin;
         var line = [userPosition, loc];
+        var icon = getFoodIcon(ingredient.name)
         L.polyline(line, {color: 'red'}).addTo(map);
-        L.marker(loc).addTo(map)
-        .bindPopup(ingredient.name)
-        .openPopup();
+        L.marker(loc, {icon: icon}).addTo(map);
+        //.bindPopup(ingredient.name)
+        //.openPopup();
         var dist =  distance(userPosition, loc);
         total_distance += dist;
         total_carbon += carbonUsed(dist);
@@ -104,7 +131,11 @@ function distance(locA, locB) {
 function carbonUsed(distance){
     return distance * carbonData.HGV;
 }
+function percentageAroundEarth(distance){
+    return Math.round(distance/40075.017);
+}
 
 function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
+
