@@ -18,11 +18,12 @@ Developed for the [CSSBristol](cssbristol.co.uk) Boeing Hackathon.
 - Run `pip install -r .\requirements.txt` to install all Python dependancies
 - Run the web server locally by running `python application.py`
 
-## API Credentials
+### API Credentials
 - Create your own file 'credentials.py' with a consumer_key, consumer_secret, access_token, and access_token_secret, which you can generate via the Twitter Application Management (https://apps.twitter.com)
 
 ```python
-#credentials.py
+# credentials.py
+
 consumer_key = ''
 consumer_secret = ''
 access_token = ''
@@ -33,7 +34,8 @@ access_token_secret = ''
 
 - [Python](https://www.python.org/)
 - [Flask](flask.pocoo.org)
-- Hosted on AWS
+- [Tweepy](https://github.com/tweepy/tweepy)
+- Hosted on [AWS](https://aws.amazon.com/)
 
 
 ## Overview
