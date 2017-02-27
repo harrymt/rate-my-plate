@@ -19,7 +19,16 @@ var mealData = {
     "origin" : [41.87194,12.56738]}]
 };
 
+var carbonData = {
+    "Air" : 1600,
+    "Van" : 200,
+    "HGV" : 180,
+    "Coastal" : 50
+};
+
 var distanceHeader = document.getElementById("distance");
+var carbonHeader = document.getElementById("carbon");
+
 var mealHeader = document.getElementById("meal");
 mealHeader.innerText = mealData.meal;
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -47,6 +56,7 @@ function showFoodSources(userPosition){
     var total_distance = 0;
     var topLeft = [0,0];
     var bottomRight = [0,0];
+    var total_carbon = 0;
     for(var i=0; i < mealData.ingredients.length; i++){
         var ingredient = mealData.ingredients[i];
         var loc = ingredient.origin;
@@ -55,7 +65,9 @@ function showFoodSources(userPosition){
         L.marker(loc).addTo(map)
         .bindPopup(ingredient.name)
         .openPopup();
-        total_distance += distance(userPosition, loc);
+        var dist =  distance(userPosition, loc);
+        total_distance += dist;
+        total_carbon += carbonUsed(dist);
         if(loc[0] < topLeft[0]){
             topLeft[0] = loc[0];
         }
@@ -72,7 +84,8 @@ function showFoodSources(userPosition){
     map.fitBounds(L.latLngBounds([topLeft, bottomRight]));
     map.setView(userPosition);
     distanceHeader.innerText += total_distance.toFixed(0) + "km";
-    
+    carbonHeader.innerText += total_carbon.toFixed(0) + "g";
+
 }
 
 function distance(locA, locB) {
@@ -87,6 +100,9 @@ function distance(locA, locB) {
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
   var d = R * c; // Distance in km
   return d;
+}
+function carbonUsed(distance){
+    return distance * carbonData.HGV;
 }
 
 function deg2rad(deg) {
