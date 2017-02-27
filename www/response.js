@@ -19,7 +19,8 @@ var mealData = {
     "origin" : [41.87194,12.56738]}]
 };
 
-console.log(mealData);
+var distanceHeader = document.getElementById("distance");
+
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
@@ -39,16 +40,39 @@ function showPosition(position){
         .bindPopup('Your location')
         .openPopup();
     map.setView(loc, 2);
-    showFoodSources();
+    showFoodSources(loc);
 }
 
-function showFoodSources(){
+function showFoodSources(userPosition){
+    var total_distance = 0;
     for(var i=0; i < mealData.ingredients.length; i++){
         var ingredient = mealData.ingredients[i];
-        console.log(ingredient);
         var loc = ingredient.origin;
+        var line = [userPosition, loc];
+        L.polyline(line, {color: 'red'}).addTo(map);
         L.marker(loc).addTo(map)
         .bindPopup(ingredient.name)
         .openPopup();
+        total_distance += distance(userPosition, loc);
     }
+    distanceHeader.innerText += total_distance.toFixed(0) + "km";
+    
+}
+
+function distance(locA, locB) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(locB[0]-locA[0]);  // deg2rad below
+  var dLon = deg2rad(locB[1]-locA[1]); 
+  var a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(locA[0])) * Math.cos(deg2rad(locB[0])) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ; 
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
 }
