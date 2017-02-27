@@ -33,8 +33,14 @@ access_token_secret = ''
 
 ### Server Side Extra Setup
 
-- Setup a CRON job
-- - `git clone https://github.com/harrymt/boeing-hackathon.git`
+Clone the Repo
+- `git clone https://github.com/harrymt/boeing-hackathon.git`
+
+Setup a Cron Job
+
+- `crontab -e` to show the list of cron jobs.
+- Then add `* * * * * python twitterbot.py` to the cronfile.
+- Then add `crontab -l` to check and see if it worked
 
 
 ### Technologies used
