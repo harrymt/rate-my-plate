@@ -31,6 +31,12 @@ access_token = ''
 access_token_secret = ''
 ```
 
+### Server Side Extra Setup
+
+- Setup a CRON job
+- - `git clone https://github.com/harrymt/boeing-hackathon.git`
+
+
 ### Technologies used
 
 - [Python](https://www.python.org/)
