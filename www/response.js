@@ -20,7 +20,8 @@ var mealData = {
 };
 
 var distanceHeader = document.getElementById("distance");
-
+var mealHeader = document.getElementById("meal");
+mealHeader.innerText = mealData.meal;
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
@@ -39,12 +40,13 @@ function showPosition(position){
     L.marker(loc).addTo(map)
         .bindPopup('Your location')
         .openPopup();
-    map.setView(loc, 2);
     showFoodSources(loc);
 }
 
 function showFoodSources(userPosition){
     var total_distance = 0;
+    var topLeft = [0,0];
+    var bottomRight = [0,0];
     for(var i=0; i < mealData.ingredients.length; i++){
         var ingredient = mealData.ingredients[i];
         var loc = ingredient.origin;
@@ -54,7 +56,21 @@ function showFoodSources(userPosition){
         .bindPopup(ingredient.name)
         .openPopup();
         total_distance += distance(userPosition, loc);
+        if(loc[0] < topLeft[0]){
+            topLeft[0] = loc[0];
+        }
+        if(loc[0] > bottomRight[0]){
+            bottomRight[0] = loc[0];
+        }
+        if(loc[1] > topLeft[1]){
+            topLeft[1] = loc[1];
+        }
+        if(loc[1] < bottomRight[1]){
+            bottomRight[1] = loc[1];
+        }
     }
+    map.fitBounds(L.latLngBounds([topLeft, bottomRight]));
+    map.setView(userPosition);
     distanceHeader.innerText += total_distance.toFixed(0) + "km";
     
 }
