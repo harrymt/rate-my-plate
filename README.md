@@ -44,6 +44,10 @@ access_token_secret = ''
 - Then add `* * * * * python twitterbot.py` to the cronfile.
 - Then add `crontab -l` to check and see if it worked
 
+*Setup a GitHook*
+
+- Create a `pull.php` file with 1 line, `<?php exec('cd boeing-hackathon && git pull'); ?>`
+
 
 ### Technologies used
 
