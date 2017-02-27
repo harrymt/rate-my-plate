@@ -1,13 +1,13 @@
 import pandas as pd
-recipes = pd.read_json('full_format_recipes.json')
-
+recipes = pd.read_csv('recipes.csv')
 def findIngredients(recipe):
-    print(recipes.title)
-
+    matches = recipes[recipes['title'].str.contains(recipe)]
+    for values in matches.iloc[0]:
+        
 
 def main():
-    print(recipes.shape)
-    findIngredients("Sweet Buttermilk Spoon Breads")
+    recipes.fillna(True)
+    findIngredients('Tomato-Onion Topping')
 
 
 
