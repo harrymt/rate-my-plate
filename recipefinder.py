@@ -30,7 +30,7 @@ def findIngredients(recipe, recipes, similar=False):
     return ingredients 
 
 def getRecipeFromApi(recipe):
-    r = requests.get("https://api.edamam.com/search?q=" + recipe + "&app_id=90bb0a66&app_key=2c44ec80d7269b7c30d7e4215bfb83d1")
+    r = requests.get("https://api.edamam.com/search?q=" + recipe + "&app_id=90bb0a66&app_key=2c44ec80d7269b7c30d7e4215bfb83d1&to=40")
     jsonContent = json.loads(r.text)
     recipes = jsonContent['hits']
     for recipe in recipes:
