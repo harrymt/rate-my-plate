@@ -33,18 +33,23 @@ def getRecipeFromApi(recipe):
     r = requests.get("https://api.edamam.com/search?q=" + recipe + "&app_id=90bb0a66&app_key=2c44ec80d7269b7c30d7e4215bfb83d1&to=40")
     jsonContent = json.loads(r.text)
     recipes = jsonContent['hits']
+    best_guess_foods = []
+    best_guess_weights = []
     for recipe in recipes:
         ingredients = recipe['recipe']['ingredients']
         foods = []
+        weights = []
         for ingredient in ingredients:
             success = True
-            if len(ingredient['text']) < 30:
+            if len(ingredient['text']) < 30 and 'weight' in ingredient:
                 foods.append(ingredient['text'])
+                weights.append(ingredient['weight'])
             else:
                  success = False
-        if success:
-            return foods
-    return []
+        if success and len(foods) > len(best_guess_foods):
+            best_guess_foods = foods
+            best_guess_weights = weights
+    return best_guess_foods, best_guess_weights
 
 def normalizeData(data, columns_to_normalize):
     for col in columns_to_normalize:
