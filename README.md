@@ -2,7 +2,7 @@
 
 Identify the environmental impact of food.
 
-Developed for the [CSSBristol](cssbristol.co.uk) Boeing Hackathon.
+Developed for the [CSSBristol](http://www.cssbristol.co.uk) Boeing Hackathon.
 
 ## Overview
 
