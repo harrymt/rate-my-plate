@@ -54,7 +54,11 @@ class FoodLocationFinder:
                 print("Getting result from DB")
                 return row[3]
      
-            df = self._comtrade.get_data(commodity = c, region = region)
+            try:
+                df = self._comtrade.get_data(commodity = c, region = region)
+            except Exception as e:
+                print(e)
+                continue
 
             if not df.empty:
                 #print(df.columns.values)
