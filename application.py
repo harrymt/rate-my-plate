@@ -20,13 +20,19 @@ finder = food_loc_finder.FoodLocationFinder('ingredientsHS.json')
 
 @application.route('/meals')
 def get_recipe_breakdown():
-    recipe_name = request.args.get('recipe');   
-    print(recipe_name, file=sys.stderr)
-    ingredients, weights = recipefinder.getRecipeFromApi(recipe_name)
-    countries = finder.get_producers_for_recipe(ingredients, 826)
-    locations = get_locations(countries)
-    return render_template("index.html", recipe=json.dumps(recipe_name), ingredients=json.dumps(ingredients), producers=json.dumps(countries), locations=json.dumps(locations), weights=json.dumps(weights))
-
+    recipe_name = request.args.get('recipe');  
+    rv = cache.get(recipe_name)
+    if rv is None:
+        print(recipe_name, file=sys.stderr)
+        ingredients, weights = recipefinder.getRecipeFromApi(recipe_name)
+        countries = finder.get_producers_for_recipe(ingredients, 826)
+        locations = get_locations(countries)
+        #dict = {"recipe" : json.dumps(recipe_name), "ingredients"=json.dumps(ingredients), "producers"=json.dumps(countries), "locations=json.dumps(locations), weights=json.dumps(weights)}
+        template = render_template("index.html", recipe=json.dumps(recipe_name), ingredients=json.dumps(ingredients), producers=json.dumps(countries), locations=json.dumps(locations), weights=json.dumps(weights))
+        cache.set(template, rv, timeout=10*60)
+        return template
+    else:
+        return rv
 
 @application.route('/icons/<path:path>')
 def send_icon(path):
