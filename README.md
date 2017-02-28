@@ -10,6 +10,8 @@ Tweet an image of food to our account, and we recognise the food and tweets back
 
 ![screenshot.png](screenshot.png)
 
+Icons designed by Madebyoliver from Flaticon
+
 ## Development Setup
 
 ### Dependancies
