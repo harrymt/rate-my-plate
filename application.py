@@ -133,5 +133,5 @@ if __name__ == "__main__":
     if sys.argv[1] == "aws":
         thisurl = "34.250.158.151"
     application.debug = True
-    application.run()
+    application.run(port=3000)
 
