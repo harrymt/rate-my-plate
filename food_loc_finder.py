@@ -1,18 +1,19 @@
 import csv
 import pandas as pd
 import comtrade_api
-from fuzzywuzzy import process
+from fuzzywuzzy import process 
 import re
 from nltk.stem.lancaster import LancasterStemmer
 import sqlite3
+import json
 
 class FoodLocationFinder:
     _comtrade = comtrade_api.ComtradeAPI()
     _conn = sqlite3.connect('comtrade.db')
     
     def __init__(self, dataset):
-        data = pd.read_json(dataset)
-        self._commodities = list(data['results'])
+        with open(dataset, 'r') as infile:
+            self._commodities = json.load(infile) 
 
     def find_country_code(self, num_code):
         #Would be preferable to keep file open
@@ -28,14 +29,14 @@ class FoodLocationFinder:
         stemmed = st.stem(food)
         result = [] 
         
-        for item in self._commodities:
+        for item_id, words in self._commodities.items():
             #if re.search(stemmed, item['text'], re.IGNORECASE):
-            x = process.extractOne(food, item['text'].split())
-            result.append((x[1], item['id']))
+            r = process.extractOne(food, words)
+            result.append((r[1], item_id))
             
         
         result.sort(key=lambda x: x[0], reverse=True) #Sort on 1st value
-        #print(result[:10])
+        print(result[:10])
         return [i[1] for i in result[:10]] #Provide 10 results
             
     
@@ -81,7 +82,7 @@ class FoodLocationFinder:
 
 
 if __name__ == "__main__":
-    finder = FoodLocationFinder('ingredientsHS.json')
+    finder = FoodLocationFinder('processed_ingredients.json')
     ingredients = ['carrot', 'peach', 'tomato', 'lamb', 'potato']
 
     print(finder.get_producers_for_recipe(ingredients, 826))
