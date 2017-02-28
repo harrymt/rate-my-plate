@@ -1,3 +1,4 @@
+from __future__ import print_function
 from flask import Flask, send_from_directory, send_file, request, render_template
 from werkzeug.contrib.cache import SimpleCache
 import pandas as pd
@@ -7,7 +8,7 @@ import food_loc_finder
 import json
 import numpy as np
 import tensorflow as tf
-
+import urllib
 modelFullPath = './neuro/output_graph.pb'
 labelsFullPath = './neuro/output_labels.txt'
 
@@ -31,6 +32,15 @@ def get_recipe_breakdown():
     image_file = request.args.get('image');
     if image_file:
         print("got image")
+        extension = image_file.split(".");
+        extension = extension[len(extension) -1]
+        urllib.request.urlretrieve(image_file, "local_image." + extension)
+        inference = run_inference_on_image("local_image." + extension)
+        suggestions = []
+        guess = inference.split("b'")
+        suggestions.append(guess[1].split('\\r')[0])
+        print(guess, file=sys.stderr)
+        recipe_name = suggestions[0]
     rv = cache.get(recipe_name)
     if rv is None:
         print(recipe_name, file=sys.stderr)
