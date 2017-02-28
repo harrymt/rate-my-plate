@@ -7,6 +7,8 @@ import os
 from os import listdir
 from os.path import isfile, join
 import pandas as pd
+import sqlite3
+import json
 
 
 class ComtradeAPI:
@@ -16,8 +18,14 @@ class ComtradeAPI:
     _max_calls = 95
     
     _init = False
+    _conn = sqlite3.connect('comtrade.db')
     
     def get_data(self, commodity = 'AG2', region = '826'): #UK by default
+
+        cursor = self._conn.execute("SELECT ID, COMMODITY, REGION, DATA FROM INGREDIENTS WHERE COMMODITY = ?", (commodity,))
+        for row in cursor:
+            print("Getting result from db")
+            return pd.DataFrame(json.loads(row[3]))
         
         if self._first_call is None:
             self._first_call = datetime.datetime.now()
@@ -48,6 +56,12 @@ class ComtradeAPI:
                 data = apiResponse.json()
                 data = data['dataset']
                 self._calls_in_hour += 1
+
+                serialized = json.dumps(data)
+                self._conn.execute("INSERT INTO INGREDIENTS (commodity, region, data) \
+                    VALUES (?, ?, ?)", (commodity, region, serialized))
+                self._conn.commit()
+                print("Inserted into db")
         
                 df = pd.DataFrame(data)
                 return df
@@ -55,5 +69,5 @@ class ComtradeAPI:
 
 if __name__ == '__main__':
     com = ComtradeAPI()
-    print(com.get_data(commodity='0403'))
+    print(com.get_data(commodity='0806'))
 

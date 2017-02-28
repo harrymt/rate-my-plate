@@ -59,6 +59,6 @@ class FoodLocationFinder:
 
 if __name__ == "__main__":
     finder = FoodLocationFinder('ingredientsHS.json')
-    ingredients = ['grapes', 'lamb']
+    ingredients = ['carrot']
 
     print(finder.get_producers_for_recipe(ingredients, 826))
