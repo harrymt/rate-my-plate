@@ -40,19 +40,20 @@ function getFoodIcon(index) {
 }
 
 function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else {
-        alert("Geolocation is not supported by this browser.");
-    }
+    //if (navigator.geolocation) {
+	showPosition([51.456118, -2.604409]);
+        //navigator.geolocation.getCurrentPosition(showPosition);
+    //} else {
+     //   alert("Geolocation is not supported by this browser.");
+    //}
 }
 
 function showPosition(position){
-    var loc = [position.coords.latitude, position.coords.longitude];
-    L.marker(loc).addTo(map)
+    //var loc = [position.coords.latitude, position.coords.longitude];
+    L.marker(position).addTo(map)
         .bindPopup('Your location')
         .openPopup();
-    showFoodSources(loc);
+    showFoodSources(position);
 }
 
 function showFoodSources(userPosition){

@@ -39,7 +39,7 @@ def get_recipe_breakdown():
         inference = run_inference_on_image("local_image." + extension)
         suggestions = []
         guess = inference.split("b'")
-        suggestions.append(guess[1].split('\\r')[0])
+        suggestions.append(guess[1].split('\\')[0])
         print(guess, file=sys.stderr)
         recipe_name = suggestions[0]
     rv = cache.get(recipe_name)
@@ -133,5 +133,5 @@ if __name__ == "__main__":
     if sys.argv[1] == "aws":
         thisurl = "34.250.158.151"
     application.debug = True
-    application.run(port=3000)
+    application.run(port=3000, host='0.0.0.0')
 
