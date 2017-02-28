@@ -8,6 +8,7 @@ def preProcessData(file_name):
     recipes = recipes.dropna()
     return recipes
 
+bbcFood = preProcessData("bbc_food.csv")
 
 def findIngredients(recipe, recipes, similar=False):
     try:
@@ -28,7 +29,6 @@ def findIngredients(recipe, recipes, similar=False):
  
     return ingredients 
 
-
 def normalizeData(data, columns_to_normalize):
     for col in columns_to_normalize:
         data[col] = data[col].apply(lambda x: abs(x))
@@ -44,3 +44,6 @@ def findSimilarIngredients(recipe_id, recipes, columns=["calories", "protein", "
     print(relevant_dataset)
     scores = relevant_dataset.mean(axis=1) - relevant_recipe.mean(axis=1)
     #print(scores)
+
+if __name__ == "__main__":
+    recipes = preProcessData('recipes.csv')
