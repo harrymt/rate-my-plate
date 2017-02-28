@@ -4,19 +4,27 @@ Identify the environmental impact of food.
 
 Developed for the [CSSBristol](cssbristol.co.uk) Boeing Hackathon.
 
+## Overview
+
+Tweet an image of food to our account, and we recognise the food and tweets back the environmental impact of that food.
+
+![screenshot.png](screenshot.png)
 
 ## Development Setup
 
 ### Dependancies
 
-- Install [Python](https://www.python.org/)
+- Install [Python](https://www.python.org/) *version: 3.5* (required for tensorflow)
 - Install [Pip](https://pypi.python.org/pypi/pip)
+- Make sure pip is updated `pip install --upgrade pip`
+
 
 ### Setup
 
 - Clone repo `git clone https://github.com/harrymt/boeing-hackathon.git`
 - Navigate to the directory `cd boeing-hackathon`
 - Run `pip install -r requirements.txt` to install all Python dependancies
+- Setup the Database `python db_setup.py`
 - Run the web server locally by running `python application.py`
 
 ### API Credentials
@@ -54,19 +62,8 @@ access_token_secret = ''
 - [Python](https://www.python.org/)
 - [Flask](flask.pocoo.org)
 - [Tweepy](https://github.com/tweepy/tweepy)
+- [TensorFlow](https://www.tensorflow.org)
+- [Bit.ly](https://bit.ly)
+- [Leaflet](http://leafletjs.com/)
 - Hosted on [AWS](https://aws.amazon.com/)
-
-
-## Overview
-
-Tweet an <strike>image</strike> recipe of food to our account, and we tweet back an environmental report.
-
-### Tasks
-
-- <strike>Image Recognition using Google API (Lukasz)</strike>
-- Create Python Server (Harry)
-- Making Twitter bot (Ellie)
-- Find out environmental impact of food (Matt)
-- Taking meal and turning them into ingredients (Gavin)
-- Front End to show off the product (Gavin)
 
