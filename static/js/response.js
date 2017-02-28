@@ -25,9 +25,16 @@ var carbonData = {
     "HGV" : 180,
     "Coastal" : 50
 };
+var producers = document.getElementById("producers").innerText;
+var ingredients = document.getElementById("ingredients").innerText;
+
 
 var distanceHeader = document.getElementById("distance");
 var carbonHeader = document.getElementById("carbon");
+//horrible bodge
+producers = producers.substring(1, producers.length -1).split(",");
+ingredients = ingredients.substring(1, ingredients.length -1).split(",");
+
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -74,7 +81,11 @@ function showFoodSources(userPosition){
     var topLeft = [0,0];
     var bottomRight = [0,0];
     var total_carbon = 0;
-    for(var i=0; i < mealData.ingredients.length; i++){
+    console.log(producers);
+    for(var i=0; i < producers.length; i++){
+        console.log(producers[i]);
+        var country = producers[i].trim();
+        country = country.substring(1, country.length-1);
         var ingredient = mealData.ingredients[i];
         var loc = ingredient.origin;
         var line = [userPosition, loc];
