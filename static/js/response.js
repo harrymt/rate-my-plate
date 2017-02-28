@@ -11,6 +11,7 @@ var producers = JSON.parse(document.getElementById("producers").innerText);
 var ingredients = JSON.parse(document.getElementById("ingredients").innerText);
 var locations = JSON.parse(document.getElementById("locations").innerText);
 var weights = JSON.parse(document.getElementById("weights").innerText);
+var icons = JSON.parse(document.getElementById("icons").innerText);
 
 var distanceHeader = document.getElementById("distance");
 var carbonHeader = document.getElementById("carbon");
@@ -32,9 +33,9 @@ function httpGet(theUrl)
     }
 }
 
-function getFoodIcon(foodName) {
+function getFoodIcon(index) {
 
-    return 'localhost/icons/' + foodName + '.png';
+    return  "http://" + icons[index];
    
 }
 
@@ -65,11 +66,20 @@ function showFoodSources(userPosition){
         var country = producers[i];
         var loc = locations[i];
         var line = [userPosition, loc];
-        var icon = getFoodIcon(ingredients[i])
+        var iconurl = icons[i]
+
+        var icon = new L.icon({iconUrl: "http://"+iconurl,iconSize:[40,40]});
         L.polyline(line, {color: 'red'}).addTo(map);
-        L.marker(loc/*, {icon: icon}*/).addTo(map)
-        .bindPopup(ingredients[i])
-        .openPopup();
+        console.log(iconurl);
+        if(iconurl !== null){
+            L.marker(loc, {icon: icon}).addTo(map)
+            .bindPopup(ingredients[i])
+            .openPopup();
+        }else{
+            L.marker(loc).addTo(map)
+                .bindPopup(ingredients[i])
+                .openPopup();
+        }
         var dist =  distance(userPosition, loc);
         total_distance += dist;
         var weight = weights[i];
