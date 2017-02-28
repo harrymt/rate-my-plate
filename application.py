@@ -22,10 +22,10 @@ finder = food_loc_finder.FoodLocationFinder('ingredientsHS.json')
 def get_recipe_breakdown():
     recipe_name = request.args.get('recipe');   
     print(recipe_name, file=sys.stderr)
-    ingredients = recipefinder.getRecipeFromApi(recipe_name)
+    ingredients, weights = recipefinder.getRecipeFromApi(recipe_name)
     countries = finder.get_producers_for_recipe(ingredients, 826)
     locations = get_locations(countries)
-    return render_template("index.html", recipe=json.dumps(recipe_name), ingredients=json.dumps(ingredients), producers=json.dumps(countries), locations=json.dumps(locations))
+    return render_template("index.html", recipe=json.dumps(recipe_name), ingredients=json.dumps(ingredients), producers=json.dumps(countries), locations=json.dumps(locations), weights=json.dumps(weights))
 
 
 @application.route('/icons/<path:path>')

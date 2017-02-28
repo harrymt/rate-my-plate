@@ -10,6 +10,7 @@ var carbonData = {
 var producers = JSON.parse(document.getElementById("producers").innerText);
 var ingredients = JSON.parse(document.getElementById("ingredients").innerText);
 var locations = JSON.parse(document.getElementById("locations").innerText);
+var weights = JSON.parse(document.getElementById("weights").innerText);
 
 var distanceHeader = document.getElementById("distance");
 var carbonHeader = document.getElementById("carbon");
@@ -71,7 +72,8 @@ function showFoodSources(userPosition){
         .openPopup();
         var dist =  distance(userPosition, loc);
         total_distance += dist;
-        total_carbon += carbonUsed(dist);
+        var weight = weights[i];
+        total_carbon += carbonUsed(dist, weight);
         if(loc[0] < topLeft[0]){
             topLeft[0] = loc[0];
         }
@@ -105,8 +107,8 @@ function distance(locA, locB) {
   var d = R * c; // Distance in km
   return d;
 }
-function carbonUsed(distance){
-    return distance * carbonData.HGV;
+function carbonUsed(distance, weight){
+    return (distance * carbonData.HGV) * (weight * 0.000001);
 }
 function percentageAroundEarth(distance){
     return Math.round(distance/40075.017);
