@@ -18,7 +18,7 @@ class ComtradeAPI:
     _max_calls = 95
     
     _init = False
-    _conn = sqlite3.connect('comtrade.db')
+    _conn = sqlite3.connect('comtrade.db', check_same_thread=False)
     
     def get_data(self, commodity = 'AG2', region = '826'): #UK by default
 

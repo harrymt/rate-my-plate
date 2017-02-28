@@ -1,8 +1,8 @@
 import pandas as pd
 import difflib
 from collections import OrderedDict
-
-
+import requests
+import json
 def preProcessData(file_name):
     recipes = pd.read_csv(file_name)
     recipes = recipes.dropna()
@@ -29,6 +29,23 @@ def findIngredients(recipe, recipes, similar=False):
  
     return ingredients 
 
+def getRecipeFromApi(recipe):
+    r = requests.get("https://api.edamam.com/search?q=" + recipe + "&app_id=90bb0a66&app_key=2c44ec80d7269b7c30d7e4215bfb83d1")
+    jsonContent = json.loads(r.text)
+    recipes = jsonContent['hits']
+    for recipe in recipes:
+        ingredients = recipe['recipe']['ingredients']
+        foods = []
+        for ingredient in ingredients:
+            success = True
+            if len(ingredient['text']) < 30:
+                foods.append(ingredient['text'])
+            else:
+                 success = False
+        if success:
+            return foods
+    return []
+
 def normalizeData(data, columns_to_normalize):
     for col in columns_to_normalize:
         data[col] = data[col].apply(lambda x: abs(x))
@@ -36,7 +53,7 @@ def normalizeData(data, columns_to_normalize):
 
 
 def findSimilarIngredients(recipe_id, recipes, columns=["calories", "protein", "fat", "sodium"], critical=[], n=1):
-    relevant_dataset = recipes.copy()[columns]
+    relevant_dataset = ecipes.copy()[columns]
     normalizeData(relevant_dataset, columns)
     relevant_recipe = relevant_dataset.loc[recipe_id].copy()
     relevant_dataset["means"] = relevant_dataset.mean(axis=1)
@@ -47,3 +64,4 @@ def findSimilarIngredients(recipe_id, recipes, columns=["calories", "protein", "
 
 if __name__ == "__main__":
     recipes = preProcessData('recipes.csv')
+    print(getRecipeFromApi("soup"))

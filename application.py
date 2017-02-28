@@ -22,7 +22,7 @@ finder = food_loc_finder.FoodLocationFinder('ingredientsHS.json')
 def get_recipe_breakdown():
     recipe_name = request.args.get('recipe');   
     print(recipe_name, file=sys.stderr)
-    ingredients = recipefinder.findIngredients(recipe_name,recipes,True)
+    ingredients = recipefinder.getRecipeFromApi(recipe_name)
     countries = finder.get_producers_for_recipe(ingredients, 826)
     producers = [x[1] for x in countries]
     country_codes = [x[0] for x in countries]
