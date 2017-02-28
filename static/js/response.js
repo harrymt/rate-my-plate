@@ -29,8 +29,6 @@ var carbonData = {
 var distanceHeader = document.getElementById("distance");
 var carbonHeader = document.getElementById("carbon");
 
-var mealHeader = document.getElementById("meal");
-mealHeader.innerText = mealData.meal;
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
@@ -51,22 +49,8 @@ function httpGet(theUrl)
 
 function getFoodIcon(foodName) {
 
-    url = '../icons/' + foodName + '.png';
-    if (httpGet(url)==1) {
-        var icon = L.icon({
-            iconUrl: 'icons/' + foodName + '.png',
-            iconSize: [32, 32]
-        });
-        
-    }
-    else {
-        var icon = L.icon({
-            iconUrl: 'icons/groceries.png',
-            iconSize: [32, 32]
-        });
-    }
-
-    return icon;
+    return 'localhost/icons/' + foodName + '.png';
+   
 }
 
 function getLocation() {

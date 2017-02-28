@@ -20,8 +20,13 @@ def findIngredients(recipe, recipes, similar=False):
     else:
         matches = recipes[recipes['title'] == recipe]
 
-    # print(matches)
-    return matches
+    ingredients = []
+    print(matches.shape)
+    for i, value in enumerate(matches.iloc[0]): 
+        if(value == 1.0): 
+            ingredients.append(recipes.columns[i]) 
+ 
+    return ingredients 
 
 
 def normalizeData(data, columns_to_normalize):
@@ -39,15 +44,3 @@ def findSimilarIngredients(recipe_id, recipes, columns=["calories", "protein", "
     print(relevant_dataset)
     scores = relevant_dataset.mean(axis=1) - relevant_recipe.mean(axis=1)
     #print(scores)
-
-
-def main():
-    recipes = preProcessData('recipes.csv')
-
-    match_recipe = findIngredients('beef burger', recipes, True)  # test
-    print(match_recipe)
-    findSimilarIngredients(match_recipe.index, recipes)
-
-
-if __name__ == "__main__":
-    main()
