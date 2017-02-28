@@ -1,4 +1,8 @@
 from nltk.corpus import wordnet as wn
+from nltk.stem.wordnet import WordNetLemmatizer
+import difflib
+import re
+
 
 def get_food_group(search):
     dairy = ["egg", "milk", "cheese", "dairy"]
@@ -7,13 +11,17 @@ def get_food_group(search):
     other = ["grain", "nut", "wheat", "bakery"]
     vegetable = ["bean", "vegetable"]
     categories = dairy + meat + fruit + other + vegetable
-
     print("Searching for", search)
     scores = dict()
-    search_synset = wn.synset(search + ".n.01")
+
+    try:
+        search_synset = wn.synset(search + ".n.01")
+    except:
+        return("vegetable")
+
     for cat in categories:
         scores[cat] = wn.synset(cat + ".n.01").path_similarity(search_synset)
-    #print(scores)
+
     best_guess = max(scores, key=scores.get)
     if best_guess in dairy:
         best_guess = "dairy"
