@@ -3,3 +3,4 @@ credentials.py
 
 __pycache__/credentials.cpython-35.pyc
 *.pyc
+*.db
