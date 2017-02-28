@@ -11,7 +11,7 @@ class FoodLocationFinder:
     _comtrade = comtrade_api.ComtradeAPI()
     _conn = sqlite3.connect('comtrade.db', check_same_thread=False)
     
-    def __init__(self, dataset):
+    def __init__(self, dataset = 'processed_ingredients.json'):
         with open(dataset, 'r') as infile:
             self._commodities = json.load(infile) 
 
@@ -29,10 +29,12 @@ class FoodLocationFinder:
         stemmed = st.stem(food)
         result = [] 
         
+        
         for item_id, words in self._commodities.items():
             #if re.search(stemmed, item['text'], re.IGNORECASE):
-            r = process.extractOne(food, words)
-            result.append((r[1], item_id))
+            if len(words) > 0:
+                r = process.extractOne(food, words)
+                result.append((r[1], item_id))
             
         
         result.sort(key=lambda x: x[0], reverse=True) #Sort on 1st value
@@ -86,7 +88,7 @@ class FoodLocationFinder:
 
 
 if __name__ == "__main__":
-    finder = FoodLocationFinder('processed_ingredients.json')
+    finder = FoodLocationFinder()
     ingredients = ['carrot', 'peach', 'tomato', 'lamb', 'potato']
 
     print(finder.get_producers_for_recipe(ingredients, 826))

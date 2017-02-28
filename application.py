@@ -15,7 +15,7 @@ application = Flask(__name__)
 cache = SimpleCache()
 recipes = recipefinder.preProcessData('recipes.csv')
 country_locations = pd.read_csv('countries.csv')
-finder = food_loc_finder.FoodLocationFinder('ingredientsHS.json')
+finder = food_loc_finder.FoodLocationFinder()
 #ratemyplate.com/meals?recipe=spghetti
 
 @application.route('/meals')
