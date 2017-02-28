@@ -25,6 +25,7 @@ country_locations = pd.read_csv('countries.csv')
 finder = food_loc_finder.FoodLocationFinder()
 icon_list = pd.read_csv('icons/iconlist.csv').ix[:,0].tolist()
 #ratemyplate.com/meals?recipe=spghetti
+thisurl = "localhost"
 
 @application.route('/meals')
 def get_recipe_breakdown():
@@ -70,7 +71,7 @@ def get_icon(ingredient):
     for word in words:
         file = word + ".png"
         if file in icon_list:
-            return "localhost:5000/icons/" + file
+            return thisurl + ":3000/icons/" + file
     return None
 
 def get_locations(producers):
@@ -129,6 +130,8 @@ def run_inference_on_image(imagePath):
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
+    if sys.argv[1] == "aws":
+        thisurl = 34.250.158.151
     application.debug = True
     application.run()
 
