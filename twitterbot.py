@@ -32,7 +32,7 @@ while True:
 
 				else:
 				
-					text = tweet.text[14:].replace(" ", "+")
+					text = '+'.join(tweet.text.split()[1:])
 					location = tweet.user.location
 					formatted_reply += shortener.short(url.format('recipe', text))
 
