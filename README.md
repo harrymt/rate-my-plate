@@ -65,5 +65,7 @@ access_token_secret = ''
 - [TensorFlow](https://www.tensorflow.org)
 - [Bit.ly](https://bit.ly)
 - [Leaflet](http://leafletjs.com/)
+- [Word Net](https://wordnet.princeton.edu/)
+- [Mat Plot Lib](http://matplotlib.org/xkcd/index.html)
 - Hosted on [AWS](https://aws.amazon.com/)
 
