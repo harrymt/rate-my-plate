@@ -9,6 +9,7 @@ import json
 import numpy as np
 import tensorflow as tf
 import urllib
+import graphics_generator
 modelFullPath = './neuro/output_graph.pb'
 labelsFullPath = './neuro/output_labels.txt'
 
@@ -29,7 +30,7 @@ thisurl = "localhost"
 
 @application.route('/meals')
 def get_recipe_breakdown():
-    recipe_name = request.args.get('recipe');  
+    recipe_name = request.args.get('recipe');
     image_file = request.args.get('image');
     if image_file:
         print("got image")
@@ -51,6 +52,10 @@ def get_recipe_breakdown():
         icons = []
         for ingredient in ingredients:
             icons.append(get_icon(ingredient))
+
+        #zipped = zip(ingredients,[i*1000 for i in weights])
+        #print(zipped)
+        #graphics_generator.generate(zipped, "static/" + recipe_name + ".png")
         template = render_template("index.html", recipe=json.dumps(recipe_name), ingredients=json.dumps(ingredients), producers=json.dumps(countries), locations=json.dumps(locations), weights=json.dumps(weights), icons=json.dumps(icons))
         cache.set(template, rv, timeout=10*60)
         return template
@@ -134,4 +139,3 @@ if __name__ == "__main__":
         thisurl = "34.250.158.151"
     application.debug = True
     application.run(port=3000, host='0.0.0.0')
-
