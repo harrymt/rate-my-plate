@@ -9,7 +9,7 @@ import json
 
 class FoodLocationFinder:
     _comtrade = comtrade_api.ComtradeAPI()
-    _conn = sqlite3.connect('comtrade.db')
+    _conn = sqlite3.connect('comtrade.db', check_same_thread=False)
     
     def __init__(self, dataset):
         with open(dataset, 'r') as infile:
