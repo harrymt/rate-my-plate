@@ -3,12 +3,15 @@ import difflib
 from collections import OrderedDict
 import requests
 import json
+
+
 def preProcessData(file_name):
     recipes = pd.read_csv(file_name)
     recipes = recipes.dropna()
     return recipes
 
 bbcFood = preProcessData("bbc_food.csv")
+
 
 def findIngredients(recipe, recipes, similar=False):
     try:
@@ -28,6 +31,7 @@ def findIngredients(recipe, recipes, similar=False):
             ingredients.append(recipes.columns[i]) 
  
     return ingredients 
+
 
 def getRecipeFromApi(recipe):
     r = requests.get("https://api.edamam.com/search?q=" + recipe + "&app_id=90bb0a66&app_key=2c44ec80d7269b7c30d7e4215bfb83d1&to=40")
@@ -51,21 +55,31 @@ def getRecipeFromApi(recipe):
             best_guess_weights = weights
     return best_guess_foods, best_guess_weights
 
+
 def normalizeData(data, columns_to_normalize):
     for col in columns_to_normalize:
         data[col] = data[col].apply(lambda x: abs(x))
         data[col] = data[col].apply(lambda x: x/data[col].median())
 
 
-def findSimilarIngredients(recipe_id, recipes, columns=["calories", "protein", "fat", "sodium"], critical=[], n=1):
-    relevant_dataset = ecipes.copy()[columns]
+def findSimilar(recipe_id, recipes, columns=["calories", "protein", "fat", "sodium"], critical=[], n=10):
+    relevant_dataset = recipes.copy()[columns]
     normalizeData(relevant_dataset, columns)
     relevant_recipe = relevant_dataset.loc[recipe_id].copy()
-    relevant_dataset["means"] = relevant_dataset.mean(axis=1)
-    print(relevant_recipe)
-    print(relevant_dataset)
-    scores = relevant_dataset.mean(axis=1) - relevant_recipe.mean(axis=1)
-    #print(scores)
+
+    recipes["means"] = relevant_dataset.mean(axis=1)
+    recipes["scores"] = recipes["means"] - float(relevant_recipe.mean(axis=1))
+    recipes["scores"] = recipes["scores"].apply(lambda x: abs(x))
+    return recipes.sort(["scores"])[1:(1+n)]
+
+
+def main(search="beef burger"):
+    recipes = preProcessData('recipes.csv')
+
+    match_recipe = findIngredients(search, recipes, True)
+
+    print(findSimilar(match_recipe.index, recipes))
+
 
 if __name__ == "__main__":
     recipes = preProcessData('recipes.csv')

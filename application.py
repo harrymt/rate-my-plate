@@ -1,3 +1,4 @@
+from __future__ import print_function
 from flask import Flask, send_from_directory, send_file, request, render_template
 from werkzeug.contrib.cache import SimpleCache
 import pandas as pd
@@ -7,7 +8,7 @@ import food_loc_finder
 import json
 import numpy as np
 import tensorflow as tf
-
+import urllib
 modelFullPath = './neuro/output_graph.pb'
 labelsFullPath = './neuro/output_labels.txt'
 
@@ -21,16 +22,26 @@ application = Flask(__name__)
 cache = SimpleCache()
 recipes = recipefinder.preProcessData('recipes.csv')
 country_locations = pd.read_csv('countries.csv')
+finder = food_loc_finder.FoodLocationFinder()
 icon_list = pd.read_csv('icons/iconlist.csv').ix[:,0].tolist()
-finder = food_loc_finder.FoodLocationFinder('ingredientsHS.json')
 #ratemyplate.com/meals?recipe=spghetti
+thisurl = "localhost"
 
 @application.route('/meals')
 def get_recipe_breakdown():
-    recipe_name = request.args.get('recipe');  
+    recipe_name = request.args.get('recipe');
     image_file = request.args.get('image');
     if image_file:
         print("got image")
+        extension = image_file.split(".");
+        extension = extension[len(extension) -1]
+        urllib.request.urlretrieve(image_file, "local_image." + extension)
+        inference = run_inference_on_image("local_image." + extension)
+        suggestions = []
+        guess = inference.split("b'")
+        suggestions.append(guess[1].split('\\r')[0])
+        print(guess, file=sys.stderr)
+        recipe_name = suggestions[0]
     rv = cache.get(recipe_name)
     if rv is None:
         print(recipe_name, file=sys.stderr)
@@ -46,8 +57,6 @@ def get_recipe_breakdown():
     else:
         return rv
 
-
-
 @application.route('/icons/<path:path>')
 def send_icon(path):
     return send_from_directory('icons', path)
@@ -62,7 +71,7 @@ def get_icon(ingredient):
     for word in words:
         file = word + ".png"
         if file in icon_list:
-            return "localhost:5000/icons/" + file
+            return thisurl + ":3000/icons/" + file
     return None
 
 def get_locations(producers):
@@ -121,6 +130,7 @@ def run_inference_on_image(imagePath):
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
+    if sys.argv[1] == "aws":
+        thisurl = "34.250.158.151"
     application.debug = True
-    application.run()
-    #print(run_inference_on_image('./neuro/ed.jpg'))
+    application.run(port=3000)
