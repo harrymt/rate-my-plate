@@ -15,7 +15,7 @@ application = Flask(__name__)
 cache = SimpleCache()
 recipes = recipefinder.preProcessData('recipes.csv')
 country_locations = pd.read_csv('countries.csv')
-icon_list = pd.read_csv('icons/iconlist.csv')
+icon_list = pd.read_csv('icons/iconlist.csv').ix[:,0].tolist()
 finder = food_loc_finder.FoodLocationFinder('ingredientsHS.json')
 #ratemyplate.com/meals?recipe=spghetti
 
@@ -29,8 +29,8 @@ def get_recipe_breakdown():
         countries = finder.get_producers_for_recipe(ingredients, 826)
         locations = get_locations(countries)
         icons = []
-        #for ingredient in ingredients:
-         #   icons.append(get_icon(ingredient))
+        for ingredient in ingredients:
+            icons.append(get_icon(ingredient))
         template = render_template("index.html", recipe=json.dumps(recipe_name), ingredients=json.dumps(ingredients), producers=json.dumps(countries), locations=json.dumps(locations), weights=json.dumps(weights), icons=json.dumps(icons))
         cache.set(template, rv, timeout=10*60)
         return template
@@ -48,11 +48,10 @@ def send_meal_breakdown(path):
 
 def get_icon(ingredient):
     words = ingredient.split()
-    print(icon_list.shape)
     for word in words:
         file = word + ".png"
         if file in icon_list:
-            return file
+            return "localhost:5000/icons/" + file
     return None
 
 def get_locations(producers):
@@ -68,6 +67,5 @@ def get_locations(producers):
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
-    #print(get_icon("i like garlic"))
     application.debug = True
     application.run()
