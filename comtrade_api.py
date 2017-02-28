@@ -24,7 +24,7 @@ class ComtradeAPI:
 
         cursor = self._conn.execute("SELECT ID, COMMODITY, REGION, DATA FROM INGREDIENTS WHERE COMMODITY = ?", (commodity,))
         for row in cursor:
-            print("Getting result from db")
+            print("Getting result from DB")
             return pd.DataFrame(json.loads(row[3]))
         
         if self._first_call is None:
