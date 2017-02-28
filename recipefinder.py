@@ -8,10 +8,8 @@ def preProcessData(file_name):
     recipes = recipes.dropna()
     return recipes
 
-recipes = preProcessData('recipes.csv')
 
-
-def findIngredients(recipe, similar=False):
+def findIngredients(recipe, recipes, similar=False):
     try:
         recipe = difflib.get_close_matches(recipe, recipes['title'], cutoff=0.5)[0]
     except:
@@ -22,8 +20,13 @@ def findIngredients(recipe, similar=False):
     else:
         matches = recipes[recipes['title'] == recipe]
 
-    # print(matches)
-    return matches
+    ingredients = []
+    print(matches.shape)
+    for i, value in enumerate(matches.iloc[0]): 
+        if(value == 1.0): 
+            ingredients.append(recipes.columns[i]) 
+ 
+    return ingredients 
 
 
 def normalizeData(data, columns_to_normalize):
@@ -41,14 +44,3 @@ def findSimilarIngredients(recipe_id, recipes, columns=["calories", "protein", "
     print(relevant_dataset)
     scores = relevant_dataset.mean(axis=1) - relevant_recipe.mean(axis=1)
     #print(scores)
-
-
-#def main():
-
-    #match_recipe = findIngredients('beef burger', True)  # test
-    #print(match_recipe)
-    #findSimilarIngredients(match_recipe.index, recipes)
-
-
-
-
