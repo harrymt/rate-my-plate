@@ -44,4 +44,3 @@ def generate(data, filename="default.svg"):
 
     return
 
-generate([("beef", 200), ("tomato", 300), ("peanut", 50), ("carrot", 40), ("sugar", 100)], "test.png")
