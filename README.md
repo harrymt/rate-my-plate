@@ -4,6 +4,11 @@ Identify the environmental impact of food.
 
 Developed for the [CSSBristol](cssbristol.co.uk) Boeing Hackathon.
 
+## Overview
+
+Tweet an image of food to our account, and we recognise the food and tweets back the environmental impact of that food.
+
+![screenshot.png](screenshot.png)
 
 ## Development Setup
 
@@ -61,8 +66,4 @@ access_token_secret = ''
 - [Bit.ly](https://bit.ly)
 - [Leaflet](http://leafletjs.com/)
 - Hosted on [AWS](https://aws.amazon.com/)
-
-## Overview
-
-Tweet an <strike>image</strike> recipe of food to our account, and we tweet back an environmental report.
 
