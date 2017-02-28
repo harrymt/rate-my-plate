@@ -11,6 +11,7 @@ var producers = JSON.parse(document.getElementById("producers").innerText);
 var ingredients = JSON.parse(document.getElementById("ingredients").innerText);
 var locations = JSON.parse(document.getElementById("locations").innerText);
 var weights = JSON.parse(document.getElementById("weights").innerText);
+var icons = JSON.parse(document.getElementById("icons").innerText);
 
 var distanceHeader = document.getElementById("distance");
 var carbonHeader = document.getElementById("carbon");
