@@ -4,9 +4,11 @@ import comtrade_api
 from fuzzywuzzy import process
 import re
 from nltk.stem.lancaster import LancasterStemmer
+import sqlite3
 
 class FoodLocationFinder:
     _comtrade = comtrade_api.ComtradeAPI()
+    _conn = sqlite3.connect('comtrade.db')
     
     def __init__(self, dataset):
         data = pd.read_json(dataset)
@@ -33,7 +35,7 @@ class FoodLocationFinder:
             
         
         result.sort(key=lambda x: x[0], reverse=True) #Sort on 1st value
-        print(result[:10])
+        #print(result[:10])
         return [i[1] for i in result[:10]] #Provide 10 results
             
     
@@ -41,9 +43,16 @@ class FoodLocationFinder:
         try:
             codes = self.get_code(food)
         except IndexError:
-            return ("UU", "Unknown")
+            return "UU"
+        
+        #check in database
 
         for c in codes:
+            cursor = self._conn.execute("SELECT ID, COMMODITY, REGION, COUNTRY_CODE FROM INGREDIENTS WHERE COMMODITY = ? AND REGION = ?", (c, region))
+            for row in cursor:
+                print("Getting result from DB")
+                return row[3]
+     
             df = self._comtrade.get_data(commodity = c, region = region)
 
             if not df.empty:
@@ -54,10 +63,15 @@ class FoodLocationFinder:
                 
                 result = df.loc[df['TradeValue'].idxmax()]
                 code = self.find_country_code(result['ptCode'])
-                return (code, result['ptTitle'])
+                self._conn.execute("INSERT INTO INGREDIENTS (commodity, region, country_code) \
+                    VALUES (?, ?, ?)", (c, region, code))
+                self._conn.commit()
+                print("Inserted into DB")
+
+                return code
 
         #If we get here then none of the codes worked
-        return ("UU", "Unknown")
+        return "UU"
     
     def get_producers_for_recipe(self, ingredients, region):
         result = []
@@ -68,6 +82,6 @@ class FoodLocationFinder:
 
 if __name__ == "__main__":
     finder = FoodLocationFinder('ingredientsHS.json')
-    ingredients = ['carrot']
+    ingredients = ['carrot', 'peach', 'tomato', 'lamb', 'potato']
 
     print(finder.get_producers_for_recipe(ingredients, 826))
