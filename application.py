@@ -9,7 +9,7 @@ import json
 import numpy as np
 import tensorflow as tf
 import urllib
-import graphics_generator
+#import graphics_generator
 modelFullPath = './neuro/output_graph.pb'
 labelsFullPath = './neuro/output_labels.txt'
 
@@ -26,7 +26,7 @@ country_locations = pd.read_csv('countries.csv')
 finder = food_loc_finder.FoodLocationFinder()
 icon_list = pd.read_csv('icons/iconlist.csv').ix[:,0].tolist()
 #ratemyplate.com/meals?recipe=spghetti
-thisurl = "localhost"
+thisurl = "35.157.168.45"
 
 @application.route('/meals')
 def get_recipe_breakdown():
@@ -136,6 +136,6 @@ if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
     if sys.argv[1] == "aws":
-        thisurl = "34.250.158.151"
+        thisurl = "35.157.168.45"
     application.debug = True
-    application.run(port=3000)
+    application.run(host='0.0.0.0', port=80)
