@@ -6,8 +6,8 @@ var sendImage = function(result){
     var request = new XMLHttpRequest();
     request.open('POST', "https://ratemyplate.world/", true);
     request.setRequestHeader("Content-type", "application/json");
-    request.send(data);
     var data = JSON.stringify({image: result.target.result});
+    request.send(data);
 }
 
 function upload(){

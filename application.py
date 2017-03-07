@@ -75,7 +75,7 @@ def send_icon(path):
     return send_from_directory('icons', path)
 
 @application.route('/')
-def send_home(path):
+def send_home():
     return send_file("static/index.html")
 
 @application.route('/<path:path>')
@@ -84,7 +84,9 @@ def send_meal_breakdown(path):
 
 @application.route('/', methods=['POST'])
 def uploadImage():
-    print(request.files)
+    print(request.headers)
+    return (request.json)
+    return None
 
 def get_icon(ingredient):
     words = ingredient.split()
