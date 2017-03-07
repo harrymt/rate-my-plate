@@ -74,10 +74,17 @@ def get_recipe_breakdown():
 def send_icon(path):
     return send_from_directory('icons', path)
 
+@application.route('/')
+def send_home(path):
+    return send_file("static/index.html")
+
 @application.route('/<path:path>')
 def send_meal_breakdown(path):
     return send_from_directory('static', path)
 
+@application.route('/', methods=['POST'])
+def uploadImage():
+    print(request.files)
 
 def get_icon(ingredient):
     words = ingredient.split()
