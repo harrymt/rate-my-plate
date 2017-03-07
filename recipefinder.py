@@ -73,14 +73,4 @@ def findSimilar(recipe_id, recipes, columns=["calories", "protein", "fat", "sodi
     return recipes.sort(["scores"])[1:(1+n)]
 
 
-def main(search="beef burger"):
-    recipes = preProcessData('recipes.csv')
 
-    match_recipe = findIngredients(search, recipes, True)
-
-    print(findSimilar(match_recipe.index, recipes))
-
-
-if __name__ == "__main__":
-    recipes = preProcessData('recipes.csv')
-    print(getRecipeFromApi("soup"))

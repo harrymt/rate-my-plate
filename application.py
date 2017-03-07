@@ -9,6 +9,14 @@ import json
 import numpy as np
 import tensorflow as tf
 import urllib
+import os
+#from OpenSSL import SSL
+#context = SSL.Context(SSL.SSLv23_METHOD)
+#path = os.path.abspath(os.curdir)
+#print(path)
+
+#context.use_privatekey_file(path+'/domain.key')
+#context.use_certificate_file(path+'/domain.crt')
 #import graphics_generator
 modelFullPath = './neuro/output_graph.pb'
 labelsFullPath = './neuro/output_labels.txt'
@@ -21,7 +29,7 @@ def say_hello(username = "World"):
 # EB looks for an 'application' callable by default.
 application = Flask(__name__)
 cache = SimpleCache()
-recipes = recipefinder.preProcessData('recipes.csv')
+#recipes = recipefinder.preProcessData('recipes.csv')
 country_locations = pd.read_csv('countries.csv')
 finder = food_loc_finder.FoodLocationFinder()
 icon_list = pd.read_csv('icons/iconlist.csv').ix[:,0].tolist()
@@ -40,7 +48,7 @@ def get_recipe_breakdown():
         inference = run_inference_on_image("local_image." + extension)
         suggestions = []
         guess = inference.split("b'")
-        suggestions.append(guess[1].split('\\r')[0])
+        suggestions.append(guess[1].split('\\')[0])
         print(guess, file=sys.stderr)
         recipe_name = suggestions[0]
     rv = cache.get(recipe_name)
@@ -135,7 +143,8 @@ def run_inference_on_image(imagePath):
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production app.
+    context = ('domain.crt', 'domain.key') 
     if sys.argv[1] == "aws":
         thisurl = "35.157.168.45"
     application.debug = True
-    application.run(host='0.0.0.0', port=80)
+    application.run(host='0.0.0.0', port=443, ssl_context=context)

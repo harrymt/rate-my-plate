@@ -17,7 +17,7 @@ class FoodLocationFinder:
 
     def find_country_code(self, num_code):
         #Would be preferable to keep file open
-        with open("UNComtradeCountryList.csv", encoding = "ISO-8859-1") as csvfile:
+        with open("UNComtradeCountryList.csv",  encoding = "ISO-8859-1") as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 if row[0] == str(num_code):

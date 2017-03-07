@@ -35,7 +35,7 @@ function httpGet(theUrl)
 
 function getFoodIcon(index) {
 
-    return  "http://" + icons[index];
+    return  "https://" + icons[index];
    
 }
 
