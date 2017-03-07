@@ -16,14 +16,15 @@
 
     <body>
         <div class="center">
-        <h1>Your energy consumption</h1>
-        <h2 id="meal">You are a bad person</h2>
-        <div id="map"></div>
-        <h3 id="distance">Total distance your food traveled: </h3>
-        <h3 id="carbon">Total carbon emitted to transport your food: </h3>
+        <h1>Upload a picture of your food</h1>
+            <form>
+                <input type="file" name="pic" accept="image/*" id="imageUpload" >
+                <input type="button" onclick="upload()">
+            </form>
 
+            <img id="displayimg"/>
         </div>
     </body>
-        <script src="js/response.js"></script>
+        <script src="js/upload.js"></script>
 
 </html>
