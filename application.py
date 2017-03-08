@@ -84,9 +84,8 @@ def send_meal_breakdown(path):
 
 @application.route('/', methods=['POST'])
 def uploadImage():
-    print(request.headers)
-    return (request.json)
-    return None
+    print(request.files[0])
+    return("yay")
 
 def get_icon(ingredient):
     words = ingredient.split()

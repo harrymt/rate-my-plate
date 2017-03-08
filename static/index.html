@@ -17,9 +17,9 @@
     <body>
         <div class="center">
         <h1>Upload a picture of your food</h1>
-            <form>
-                <input type="file" name="pic" accept="image/*" id="imageUpload" >
-                <input type="button" onclick="upload()">
+            <form action="/" method="post">
+                <input type="file" name="image" accept="image/*" id="imageUpload" >
+                <input type="submit" value="Submit">
             </form>
 
             <img id="displayimg"/>
